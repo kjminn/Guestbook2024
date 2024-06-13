@@ -4,6 +4,7 @@ import kr.ac.kopo.guestbook2024.dto.GuestbookDTO;
 import kr.ac.kopo.guestbook2024.dto.PageRequestDTO;
 import kr.ac.kopo.guestbook2024.service.GuestbookService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,5 +54,14 @@ public class GuestbookController {
         redirectAttributes.addFlashAttribute("msg", gno);
 
         return "redirect:/guestbook/list";
+    }
+
+    @PostMapping("/modify")
+    public String modify(GuestbookDTO dto, @ModelAttribute("requestDTO") PageRequestDTO requestDTO,  RedirectAttributes redirectAttributes){
+        service.modify(dto);
+        redirectAttributes.addAttribute("page", requestDTO.getPage());
+        redirectAttributes.addAttribute("gno", dto.getGno());
+
+        return "redirect:/guestbook/read";
     }
 }
